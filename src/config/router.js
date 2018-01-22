@@ -7,9 +7,19 @@ const Op = require('sequelize').Op;
 module.exports = function (server) {
 
     router.get('/todo', function (req, res) {
-        Todo.findAll().then(todo => {
-            res.json(todo);
-        });
+        if (req.query.description) {
+            Todo.findAll({
+                where: {
+                    description: { [Op.like]: `%${req.query.description}` }
+                }
+            }).then(todo => {
+                res.json(todo);
+            })
+        } else {
+            Todo.findAll().then(todo => {
+                res.json(todo);
+            });
+        }
     });
 
     router.get('/todo/:id', function (req, res) {
