@@ -23,7 +23,14 @@ module.exports = function (server) {
     });
 
     router.get('/todo/:id', function (req, res) {
-        Todo.findAll({ where: { id: req.params.id } }).then(todo => {
+        Todo.findAll({
+            where: {
+                id: {
+                    [Op.eq]:
+                        req.params.id
+                }
+            }
+        }).then(todo => {
             res.json(todo);
         }).catch(error => {
             res.json(error);
@@ -45,7 +52,12 @@ module.exports = function (server) {
             description: req.body.description,
             done: req.body.done
         },
-            { where: { id: req.params.id } }
+            {
+                where: {
+                    id:
+                        { [Op.eq]: req.params.id }
+                }
+            }
         ).then(() => {
             Todo.findById(req.params.id).then(result => {
                 res.json(result)
@@ -59,7 +71,8 @@ module.exports = function (server) {
     router.delete('/todo/:id', function (req, res) {
         Todo.destroy({
             where: {
-                id: req.params.id
+                id:
+                    { [Op.eq]: req.params.id }
             }
         }).then((result) => {
             res.json('success')
