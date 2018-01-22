@@ -10,7 +10,7 @@ module.exports = function (server) {
         if (req.query.description) {
             Todo.findAll({
                 where: {
-                    description: { [Op.like]: `%${req.query.description}&` }
+                    description: { [Op.like]: `%${req.query.description}%` }
                 }
             }).then(todo => {
                 res.json(todo);
